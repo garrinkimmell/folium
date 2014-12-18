@@ -736,12 +736,16 @@ class Map(object):
             #Create DataFrame with only the relevant columns
             if isinstance(data, pd.DataFrame):
                 data = pd.concat([data[columns[0]], data[columns[1]]], axis=1)
-
             #Save data to JSON
             self.json_data[data_out] = utilities.transform_data(data)
 
             #Add data to queue
-            d_path = ".defer(d3.json, '{0}')".format(data_out)
+            # d_path = ".defer(d3.json, '{0}')".format(data_out)
+
+            dseries = [dict(zip(data[columns[0]], data[columns[1]]))]
+            d_path = (".defer(function(callback1)"
+                        "{{callback1(null, JSON.parse('{}'))}})").format(json.dumps(dseries))
+
             self.template_vars.setdefault('json_paths', []).append(d_path)
 
             #Add data variable to makeMap function
@@ -750,7 +754,7 @@ class Map(object):
 
             #D3 Color scale
             series = data[columns[1]]
-            if threshold_scale and len(threshold_scale) > 6:
+            if threshold_scale and len(threshold_scale) > 20:
                 raise ValueError
             domain = threshold_scale or utilities.split_six(series=series)
             if len(domain) > 253:

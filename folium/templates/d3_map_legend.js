@@ -1,4 +1,4 @@
-    var legend = L.control({position: 'topright'});
+    var legend = L.control({position: 'bottomleft'});
 
     legend.onAdd = function (map) {var div = L.DomUtil.create('div', 'legend'); return div};
 

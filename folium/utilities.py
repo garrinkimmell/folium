@@ -223,7 +223,7 @@ def transform_data(data):
               isinstance(value, pd.Period)):
             return time.mktime(value.timetuple())
         elif isinstance(value, (int, np.integer)):
-            return int(value)
+            return '"%s"' % int(value)
         elif isinstance(value, (float, np.float_)):
             return float(value)
         elif isinstance(value, str):
